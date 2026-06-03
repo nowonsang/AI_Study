@@ -48,6 +48,28 @@ function getInitial(name) {
   return name?.charAt(0) ?? '?'
 }
 
+function MemberAvatar({ name, avatar, badgeClass }) {
+  if (avatar) {
+    return (
+      <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-100 border border-gray-200">
+        <img
+          src={avatar}
+          alt={name}
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+      </div>
+    )
+  }
+  return (
+    <div
+      className={`w-10 h-10 rounded-full grid place-items-center font-bold border ${badgeClass}`}
+    >
+      {getInitial(name)}
+    </div>
+  )
+}
+
 export default function Hub() {
   const today = new Date()
   const month = MONTHS[today.getMonth()]
@@ -81,7 +103,7 @@ export default function Hub() {
           <span className="text-sm text-gray-700">
             <span className="font-semibold text-gray-900">6월 4일 주제</span>
             <span className="mx-2 text-gray-300">·</span>
-            캘린더 기반 To-do 관리 시스템 만들기
+            서브 에이전트로 캘린더 기반 To-do 관리 시스템 만들기
           </span>
         </div>
       </section>
@@ -89,7 +111,7 @@ export default function Hub() {
       {/* Members Grid */}
       <section id="members-grid" className="mb-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {members.map(({ name, slug, role, accent }) => {
+          {members.map(({ name, slug, role, accent, avatar }) => {
             const c = accentClass[accent] ?? accentClass.brand
             return (
               <Link
@@ -107,11 +129,7 @@ export default function Hub() {
                   >
                     {role}
                   </span>
-                  <div
-                    className={`w-10 h-10 rounded-full grid place-items-center font-bold border ${c.badge}`}
-                  >
-                    {getInitial(name)}
-                  </div>
+                  <MemberAvatar name={name} avatar={avatar} badgeClass={c.badge} />
                 </div>
 
                 <h3 className="text-xl font-bold text-gray-900 mb-1">{name}</h3>
