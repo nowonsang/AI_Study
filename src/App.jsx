@@ -38,7 +38,7 @@ export default function App() {
           {members.map(({ slug, Component }) => (
             <Route
               key={slug}
-              path={`/people/${slug}`}
+              path={`/people/${slug}/*`}
               element={<Component />}
             />
           ))}

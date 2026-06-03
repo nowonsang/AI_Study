@@ -1,6 +1,16 @@
 /** @type {import('tailwindcss').Config} */
+const accentColors = ['brand', 'blue', 'indigo', 'purple', 'pink', 'orange', 'teal']
+
 export default {
   content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
+  safelist: accentColors.flatMap((c) => [
+    `from-${c}-400`,
+    `to-${c}-600`,
+    `bg-${c}-50`,
+    `text-${c}-700`,
+    `border-${c}-100`,
+    `group-hover:text-${c}-600`,
+  ]),
   theme: {
     extend: {
       fontFamily: {
