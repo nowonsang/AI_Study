@@ -7,6 +7,16 @@
 
 ---
 
+## 0. 개발 명령어 & 스택 (Quick Reference)
+
+- **스택**: React 18 + Vite 5 + React Router 6 + Tailwind 3
+- **실행**: `npm run dev` (→ http://localhost:5173)
+- **빌드**: `npm run build` · **프리뷰**: `npm run preview` (포트 4173)
+- **테스트 프레임워크 없음** — 수동 브라우저 검증 (Hub → 본인 카드 클릭)
+- 의존성 추가는 공용 변경 → 관리자(노원상)만 가능
+
+---
+
 ## 1. 사용자 식별 (Identity Detection) — 매 응답 첫 단계
 
 사용자 메시지에 아래 한글 이름이 등장하면 **즉시** 매칭하여 작업 슬러그(`<SLUG>`)를 확정합니다. 이름 등장 위치는 자기 소개·소속·요청 어디든 무관합니다.
@@ -88,6 +98,12 @@ src/people/<SLUG>/<YYYY-MM-DD>/...
    - 사용자가 "main 수정", "라우팅에 연결", "오늘 작업을 메인에 반영" 등으로 명시 요청한 경우에만 `src/people/<SLUG>/main.jsx`를 수정합니다.
    - 일반적으로는 `main.jsx`에서 `./<YYYY-MM-DD>/index.jsx` 등을 import 해 오늘 작업을 보여주는 패턴을 권장합니다.
 
+   ```jsx
+   // src/people/nowonsang_pro/main.jsx
+   import Today from './2026-06-04/index.jsx'
+   export default function Main() { return <Today /> }
+   ```
+
 5. **예외 — 사용자가 명시적으로 다른 위치 지정**
    - "기존 파일 수정", "어제 폴더에 추가", `src/people/<SLUG>/2026-06-02/...` 같은 명시 경로 지정 시에만 날짜 폴더 외 위치에 작업합니다.
 
@@ -102,6 +118,8 @@ src/people/nowonsang_pro/2026-06-03/
 ├── events.js          # 데이터
 └── styles.css         # 필요 시
 ```
+
+**기존 구조 참고**: 각 멤버 폴더에는 `projects/`, `projects.js` (포트폴리오 카탈로그)가 이미 존재합니다. 날짜 폴더의 결과물을 `projects.js`에 등록해 누적 전시할 수 있습니다 (선택).
 
 ---
 
@@ -152,6 +170,7 @@ localStorage.setItem(KEY, JSON.stringify(events))
 본인 폴더 안의 UI 작업도 **동화 디자인 시스템 v1**(`.claude/skills/dongwha-design/SKILL.md`)을 따릅니다:
 
 - CSS 변수 우선 사용: `var(--color-primary)`, `var(--font-family)` 등
+- Tailwind 3 사용 가능 — 단 임의 색상 클래스(`bg-red-500` 등) 금지. `bg-[var(--color-primary)]` 식으로 토큰 참조
 - 신규 색상·폰트가 필요하면 디자인 시스템 토큰에서 가져오기
 - 11px 이하 폰트 금지, Primary `#00694D` 외 임의 컬러 금지
 
