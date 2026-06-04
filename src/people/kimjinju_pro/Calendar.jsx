@@ -21,6 +21,8 @@ export default function Calendar() {
       </div>
 
       <p>👉 아직 비어 있어요. 코드를 수정해 캘린더를 만들어 보세요!</p>
+
+      <p>git 설정이 잘 되었는지 테스트 해 봅시당</p> 
     </div>
   )
 }
