@@ -15,7 +15,7 @@ export const projects = [
     slug: '2026-06-04',
     date: '2026.06.04',
     title: '캘린더',
-    desc: '첫 회차 — 캘린더 시스템',
+    desc: '서브 에이전트로 캘린더 기반 To-do 관리 시스템 만들기',
     Component: lazy(() => import('./projects/2026-06-04/index.jsx')),
   },
   {
