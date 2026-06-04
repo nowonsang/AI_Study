@@ -1,0 +1,305 @@
+{
+  "ranAt": "2026-06-04T06:23:54.374Z",
+  "baseUrl": "http://localhost:5173/people/nowonsang_pro/2026-06-04",
+  "results": [
+    {
+      "num": 1,
+      "file": "01-home-initial.png",
+      "scenario": "Hub 첫 화면 로드",
+      "ac": "env",
+      "result": "✅",
+      "note": ""
+    },
+    {
+      "num": 2,
+      "file": "02-member-card-nowonsang.png",
+      "scenario": "노원상 멤버 페이지 진입 (작업 목록)",
+      "ac": "env",
+      "result": "✅",
+      "note": ""
+    },
+    {
+      "num": 3,
+      "file": "03-project-card-todo.png",
+      "scenario": "Todo 일정관리 카드 노출 확인",
+      "ac": "env",
+      "result": "✅",
+      "note": ""
+    },
+    {
+      "num": 4,
+      "file": "04-calendar-empty-state.png",
+      "scenario": "초기 진입(2026-06) — 환영 배너 + 패널 EmptyState",
+      "ac": "AC-01",
+      "result": "✅",
+      "note": "welcomeBanner=1, emptyState=1"
+    },
+    {
+      "num": 5,
+      "file": "05-month-prev.png",
+      "scenario": "이전 달(‹) — 2026-05 이동",
+      "ac": "AC-09",
+      "result": "✅",
+      "note": "header=\"2026년 5월\""
+    },
+    {
+      "num": 6,
+      "file": "06-month-next.png",
+      "scenario": "다음 달(›) — 2026-07 이동",
+      "ac": "AC-09",
+      "result": "✅",
+      "note": "header=\"2026년 7월\""
+    },
+    {
+      "num": 7,
+      "file": "07-day-selected.png",
+      "scenario": "6월 15일 셀 클릭 → 패널 갱신 + 셀 강조",
+      "ac": "AC-02",
+      "result": "✅",
+      "note": "panel=\"6월 15일 (월)\", cellSelected=true"
+    },
+    {
+      "num": 8,
+      "file": "08-todo-form-open-empty.png",
+      "scenario": "+ 새 일정 추가 → 모달 오픈 (비어 있음)",
+      "ac": "AC-03",
+      "result": "✅",
+      "note": "dialogTitle=\"새 일정 추가\""
+    },
+    {
+      "num": 9,
+      "file": "09-todo-form-validation.png",
+      "scenario": "제목 공란 상태 — 저장 disabled + 헬퍼 노출",
+      "ac": "AC-04",
+      "result": "✅",
+      "note": "saveDisabled=true, helper=1"
+    },
+    {
+      "num": 10,
+      "file": "10-todo-form-filled.png",
+      "scenario": "제목·우선순위·시간·카테고리 입력 → 저장 활성",
+      "ac": "AC-03",
+      "result": "✅",
+      "note": "saveEnabled=true"
+    },
+    {
+      "num": 11,
+      "file": "11-todo-saved-panel.png",
+      "scenario": "저장 후 패널 리스트에 \"기획 회의\" 표시",
+      "ac": "AC-03",
+      "result": "✅",
+      "note": "panel item count=1"
+    },
+    {
+      "num": 12,
+      "file": "12-todo-saved-badge.png",
+      "scenario": "캘린더 6/15 셀에 뱃지 1개 표시",
+      "ac": "AC-03",
+      "result": "✅",
+      "note": "badgeCount=1"
+    },
+    {
+      "num": 13,
+      "file": "13-todo-toggle-complete.png",
+      "scenario": "체크박스 토글 → data-completed=true",
+      "ac": "AC-06",
+      "result": "✅",
+      "note": "data-completed=true"
+    },
+    {
+      "num": 14,
+      "file": "14-todo-edit-modal.png",
+      "scenario": "뱃지 클릭 → 수정 모달 + 기존 값 prefill",
+      "ac": "AC-07",
+      "result": "✅",
+      "note": "header=\"일정 수정\", title=\"기획 회의\""
+    },
+    {
+      "num": 15,
+      "file": "15-todo-edit-saved.png",
+      "scenario": "수정 저장 → 제목 \"기획 검토\"로 반영",
+      "ac": "AC-07",
+      "result": "✅",
+      "note": "renamed=1"
+    },
+    {
+      "num": 16,
+      "file": "16-todo-delete-confirm.png",
+      "scenario": "window.confirm 메시지 검증 + 토스트(실행취소) 노출",
+      "ac": "AC-08",
+      "result": "✅",
+      "note": "confirm=\"정말 삭제하시겠습니까?\", toast=\"일정이 추가되었습니다 ×\""
+    },
+    {
+      "num": 17,
+      "file": "17-todo-delete-completed.png",
+      "scenario": "삭제 완료 + 빈 상태 복귀",
+      "ac": "AC-08",
+      "result": "✅",
+      "note": "items=0, emptyVisible=1"
+    },
+    {
+      "num": 18,
+      "file": "18-localstorage-persisted.png",
+      "scenario": "새로고침 후 데이터 유지 (localStorage)",
+      "ac": "AC-10",
+      "result": "✅",
+      "note": "panel=1, storageHas=true"
+    },
+    {
+      "num": 19,
+      "file": "19-todo-form-time-validation.png",
+      "scenario": "종료시간 < 시작시간 — 에러 + 저장 disabled",
+      "ac": "AC-05",
+      "result": "✅",
+      "note": "timeErr=1, saveDisabled=true"
+    },
+    {
+      "num": 20,
+      "file": "20-calendar-badge-overflow.png",
+      "scenario": "한 셀에 todo 5건 → 뱃지 3개 + \"+2 more\"",
+      "ac": "AC-11",
+      "result": "✅",
+      "note": "visibleBadges=3, more=\"+2 more\""
+    },
+    {
+      "num": 21,
+      "file": "21-mobile-responsive-stack.png",
+      "scenario": "375x812 모바일 — 캘린더 위, 패널 아래 (스택)",
+      "ac": "AC-13",
+      "result": "✅",
+      "note": "gridCols=\"311px\", panelVisible=true"
+    },
+    {
+      "num": 22,
+      "file": "22-keyboard-focus-outline.png",
+      "scenario": "Tab 키 이동 — 포커스 outline 가시화",
+      "ac": "AC-12",
+      "result": "✅",
+      "note": "active={\"tag\":\"BUTTON\",\"cls\":\"tc-icon-btn\",\"outlineStyle\":\"auto\",\"outlineColor\":\"rgb(0, 95, 204)\",\"outlineWidth\":\"1px\"}"
+    }
+  ],
+  "consoleLog": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "warning",
+      "text": "⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition."
+    },
+    {
+      "type": "warning",
+      "text": "⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "warning",
+      "text": "⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition."
+    },
+    {
+      "type": "warning",
+      "text": "⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "warning",
+      "text": "⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition."
+    },
+    {
+      "type": "warning",
+      "text": "⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "warning",
+      "text": "⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition."
+    },
+    {
+      "type": "warning",
+      "text": "⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath."
+    },
+    {
+      "type": "debug",
+      "text": "[mobile] [vite] connecting..."
+    },
+    {
+      "type": "info",
+      "text": "[mobile] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "warning",
+      "text": "[mobile] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition."
+    },
+    {
+      "type": "warning",
+      "text": "[mobile] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath."
+    },
+    {
+      "type": "debug",
+      "text": "[mobile] [vite] connected."
+    },
+    {
+      "type": "debug",
+      "text": "[d2] [vite] connecting..."
+    },
+    {
+      "type": "info",
+      "text": "[d2] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "warning",
+      "text": "[d2] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition."
+    },
+    {
+      "type": "warning",
+      "text": "[d2] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath."
+    },
+    {
+      "type": "debug",
+      "text": "[d2] [vite] connected."
+    }
+  ],
+  "pageErrors": []
+}
