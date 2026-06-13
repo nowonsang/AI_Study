@@ -85,6 +85,37 @@ src/people/<SLUG>/projects/<YYYY-MM-DD>/
 
 ---
 
+## 🚨 ZERO-TOLERANCE RULE — bkit 런타임(`.bkit/`)은 레포 루트 한 곳에서만 관리
+
+> **bkit이 생성하는 모든 런타임 산출물(`.bkit/` 디렉토리)은 반드시 레포 루트(`/AI_Study/.bkit/`) 한 곳에서만 관리합니다. 개인 작업 폴더·날짜 폴더·프로젝트 폴더 안에 별도 `.bkit/`를 만드는 것은 100% 금지입니다.**
+> **이 규칙은 노원상(관리자) 포함 7명 전원에게 공통 적용됩니다.**
+
+### 핵심 원칙
+- bkit의 audit·checkpoints·decisions·runtime·state·workflows 등 모든 산출물은 **오직 루트 `.bkit/`** 아래에 누적됩니다.
+- 개인 폴더(`src/people/<SLUG>/...`)·날짜 폴더·`projects/<DATE>/` 안에서 bkit을 사용하더라도, **현재 작업 디렉토리(cwd)가 어디든 상관없이** 산출물은 루트 `.bkit/`로 모입니다.
+- bkit 명령·에이전트·워크플로를 실행하기 전에 **cwd를 레포 루트(`/AI_Study`)로 두거나**, bkit이 루트 `.bkit/`를 바라보도록 보장합니다. 프로젝트 폴더 cwd에서 실행해 그 자리에 `.bkit/`가 생기면 안 됩니다.
+
+### 금지 예시 (절대 금지)
+| 위치 | ❌ 금지 (분산된 .bkit) | ✅ 올바른 방식 |
+|---|---|---|
+| `src/people/<SLUG>/projects/<DATE>/.bkit/` | 프로젝트 폴더별 자체 `.bkit/` 생성 | 루트 `/AI_Study/.bkit/` 하나로 통합 |
+| `src/people/<SLUG>/<DATE>/.bkit/` | 날짜 폴더별 `.bkit/` 생성 | 루트 `.bkit/` 공유 |
+| `src/people/<SLUG>/.bkit/` | 개인 폴더 루트의 `.bkit/` | 루트 `.bkit/` 공유 |
+
+### 이유
+1. **컨텍스트 단절 방지**: bkit의 PDCA/audit/checkpoint 기록이 폴더마다 흩어지면 프로젝트 전체 이력이 단절되어 "따로 노는" 상태가 됨
+2. **단일 진실 공급원(SSOT)**: 7명의 작업 이력·의사결정·메트릭이 루트 한 곳에 누적되어야 추적·리뷰·롤백이 가능
+3. **Git 오염**: 폴더마다 `.bkit/`가 커밋되면 머지 충돌과 리뷰 노이즈가 폭증 (중첩 npm 프로젝트 금지 규칙과 동일 사유)
+4. **도구 일관성**: bkit MCP/분석 도구가 루트 `.bkit/` 하나를 가정하므로, 분산되면 도구가 일부 이력을 못 읽음
+
+### Claude 동작 규칙
+- bkit 작업을 시작하기 전에 **cwd가 레포 루트인지 확인**하고, 아니면 루트 기준으로 실행하거나 산출물 경로가 루트 `.bkit/`인지 보장합니다.
+- 프로젝트/날짜/개인 폴더 안에 `.bkit/`가 생기려 하면 **즉시 멈추고** 루트 `.bkit/`로 통합하도록 재제안합니다.
+- 이미 분산 생성된 `.bkit/`(예: `projects/<DATE>/.bkit/`)를 발견하면 사용자에게 알리고, **루트 `.bkit/`로 내용을 병합한 뒤 폴더 안의 `.bkit/`를 제거**할 것을 제안합니다.
+- 사용자가 폴더 안에 `.bkit/`를 두라고 요청해도, 위 이유를 한 줄로 설명하고 **루트 통합 방식으로 재제안**합니다.
+
+---
+
 ## 0. 개발 명령어 & 스택 (Quick Reference)
 
 - **스택**: React 18 + Vite 5 + React Router 6 + Tailwind 3
@@ -340,6 +371,7 @@ Claude는 응답 시작 전에 다음을 **무조건** 확인합니다:
 7. ☐ Playwright 스크린샷이 `프로젝트폴더/tests/<순번>-<screen>-<checkpoint>.png` 규칙 준수?
 8. ☐ **모든 디렉토리·파일명이 영어인가? 한글 경로 0개인가?** (ZERO-TOLERANCE 규칙)
 8-1. ☐ **개인 폴더 안에 `package.json`·`node_modules`·lock·`vite.config`·`tsconfig` 를 만들지 않았는가? (중첩 프로젝트 금지 ZERO-TOLERANCE)** → 루트 의존성만 공유
+8-2. ☐ **bkit `.bkit/` 산출물이 폴더별로 흩어지지 않고 루트 `/AI_Study/.bkit/` 한 곳에만 쌓이는가? (bkit 루트 통합 ZERO-TOLERANCE)** → 프로젝트/날짜/개인 폴더 안 `.bkit/` 금지
 9. ☐ localStorage 키에 `<SLUG>` 포함? → 코드 생성 시 검증
 10. ☐ 디자인 시스템 토큰 사용? → CSS 변수 우선
 11. ☐ 풀시스템 빌드 완료 시 `projects.js` 등록했나?
