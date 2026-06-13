@@ -1,0 +1,36 @@
+project: react-3d-voxel-minecraft-highquality
+slug: nowonsang_pro
+projectDir: src/people/nowonsang_pro/projects/2026-06-13
+date: 2026-06-13
+goal: >
+  고퀄리티판 — 순수 TS/JS 엔진(react/jsx/document 0) + 얇은 React 셸. 11 오라클.
+  지휘: bkit /pdca team 의도였으나 Agent Teams 비활성 → Workflow/일반 서브에이전트 fallback (ADR 0001).
+  러너: node --test + JS/JSDoc 유지(루트 의존성 0, ADR 0001).
+
+waves_executed:
+  W0: baseline 5-오라클 CPU판 보존 (tag bkg-voxel-baseline-2026-06-13)
+  W1: 순수엔진 확장 — worldgen/light/physics/atlas/chunks 5모듈 병렬, 전부 green
+  W2_next: 셸 배선(worldgen 지형·physics 중력·atlas/light 셰이딩) + GPU 렌더 하네스(연기 오라클)
+
+oracles:
+  AC1:  node --test engine/raycast.test.js     # green (CPU DDA). 셰이더 패리티는 연기(GPU)
+  AC2:  node --test engine/world.test.js        # green
+  AC3:  node --test tests/purity.test.js        # green (engine/*.js 5신규 포함 0토큰)
+  AC4:  node --test tests/controls.test.js      # green
+  AC5:  node bench/fps.mjs                       # green 157.9fps. 960x540@60 GPU바닥은 연기
+  AC6:  node --test engine/atlas.test.js         # green (면셰이딩 top>side>bottom)
+  AC7:  node --test engine/light.test.js         # green (AO+flood-fill)
+  AC8:  node --test engine/worldgen.test.js      # green (노이즈+동굴)
+  AC9:  node --test tests/streaming.test.js      # green (청크 스트리밍)
+  AC10: node --test engine/physics.test.js       # green (AABB 스윕)
+  AC11: bench/golden (headless WebGL)            # deferred (ADR 0002, Playwright 오프스크린 권장)
+
+deferred:
+  - AC1 셰이더 패리티 (GPU↔raycast.js ε일치) — ADR 0002
+  - AC11 골든 이미지 회귀 — ADR 0002
+  - AC5' 960x540@60fps GPU — ADR 0002
+
+constraints:
+  - engine/*.js 에 react/jsx/document 0회 (purity 단언)
+  - 실시간 1인칭 3D, 메인 루프 rAF, 대화형 입력 금지
+  - 디렉토리/파일명 영어(ASCII)만, 중첩 npm 프로젝트 금지(루트 의존성 공유)

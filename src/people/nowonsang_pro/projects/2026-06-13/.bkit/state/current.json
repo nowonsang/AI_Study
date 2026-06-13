@@ -1,0 +1,23 @@
+{
+  "project": "react-3d-voxel-minecraft (high-quality wave)",
+  "writer": "main-orchestrator (CTO Lead fallback, Agent Teams unset)",
+  "updated": "2026-06-13",
+  "gate": "11-oracle high-quality; this wave = pure-engine path AC1-AC10 (CPU). GPU AC1-parity/AC11 deferred (ADR 0002).",
+  "per_ac": {
+    "AC1_raycast":   { "id": "AC1", "status": "green",   "attempts": 0, "last_error_sig": null, "metric_history": ["36->83 suite green"], "note": "CPU DDA green. shader-parity portion deferred (GPU)." },
+    "AC2_world":     { "id": "AC2", "status": "green",   "attempts": 0, "last_error_sig": null, "metric_history": ["roundtrip ok"] },
+    "AC3_purity":    { "id": "AC3", "status": "green",   "attempts": 0, "last_error_sig": null, "metric_history": ["0 react/jsx/document tokens across engine/*.js incl 5 new"] },
+    "AC4_controls":  { "id": "AC4", "status": "green",   "attempts": 0, "last_error_sig": null, "metric_history": ["input seq ok"] },
+    "AC5_fps":       { "id": "AC5", "status": "green",   "attempts": 0, "last_error_sig": null, "metric_history": ["157.9fps@160x100 (CPU). 960x540@60 GPU floor deferred"] },
+    "AC6_atlas":     { "id": "AC6", "status": "green",   "attempts": 1, "last_error_sig": null, "metric_history": ["atlas 7 blocks + faceShade top>side>bottom; 8 tests"] },
+    "AC7_light":     { "id": "AC7", "status": "green",   "attempts": 1, "last_error_sig": null, "metric_history": ["AO concave<flat + flood monotonic; 6 tests"] },
+    "AC8_worldgen":  { "id": "AC8", "status": "green",   "attempts": 1, "last_error_sig": null, "metric_history": ["heightmap var>1.0 + enclosed-air caves; 7 tests"] },
+    "AC9_streaming": { "id": "AC9", "status": "green",   "attempts": 1, "last_error_sig": null, "metric_history": ["load/unload + view-dist (2R+1)^3; 6 tests"] },
+    "AC10_physics":  { "id": "AC10","status": "green",   "attempts": 1, "last_error_sig": null, "metric_history": ["gravity arc + swept no-tunnel + stepup; 10 tests"] },
+    "AC1_shader_parity": { "id": "AC1b", "status": "blocked", "attempts": 0, "last_error_sig": "no-headless-webgl", "metric_history": [], "note": "deferred ADR0002 — needs GPU/headless harness" },
+    "AC11_golden":   { "id": "AC11","status": "blocked", "attempts": 0, "last_error_sig": "no-headless-webgl", "metric_history": [], "note": "deferred ADR0002 — Playwright offscreen recommended over headless-gl" }
+  },
+  "best_known_good": "git tag bkg-voxel-engine-expansion-2026-06-13",
+  "budgets": { "per_ac_max": 8, "global_iter_max": 60 },
+  "progress": { "green_count": 10, "deferred_count": 2, "target_this_wave": 10, "nearest_gap": "shell wiring + GPU render harness (next wave)" }
+}
