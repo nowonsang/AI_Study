@@ -5,7 +5,7 @@ import { renderFrame } from '../engine/render.js';
 import {
   applyInput,
   applyLook,
-  createWorld,
+  createGenWorld,
   deserialize,
   mineBlock,
   placeBlock,
@@ -15,6 +15,7 @@ import {
 import '../styles/game.css';
 
 const STORE_KEY = 'ai-study.voxel.nowonsang_pro';
+const WORLD_SEED = 1337;
 const INTERNAL_W = 256;
 const INTERNAL_H = 160;
 const LOOK_SENS = 0.0024;
@@ -36,7 +37,7 @@ function camOf(w) {
 
 export default function Game() {
   const canvasRef = useRef(null);
-  const worldRef = useRef(createWorld());
+  const worldRef = useRef(createGenWorld(WORLD_SEED));
   const keysRef = useRef(new Set());
   const lockedRef = useRef(false);
   const [hud, setHud] = useState({ inventory: worldRef.current.inventory, selected: worldRef.current.selectedBlock });
@@ -145,7 +146,7 @@ export default function Game() {
     }
   };
   const reset = () => {
-    worldRef.current = createWorld();
+    worldRef.current = createGenWorld(WORLD_SEED);
     syncHud();
   };
 

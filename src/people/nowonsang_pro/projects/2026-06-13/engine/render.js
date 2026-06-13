@@ -2,24 +2,18 @@
 // 외부 UI 프레임워크/DOM 의존 없음 — 같은 함수를 UI 셸(putImageData)과 bench(node)가 공용.
 
 import { castRay, rayDirection } from './raycast.js';
-
-// 블록 id 별 기본 색(RGB). 0 미사용.
-const PALETTE = [
-  [0, 0, 0],
-  [150, 150, 158], // 1 돌
-  [110, 180, 85], // 2 잔디
-  [165, 120, 72], // 3 흙
-  [90, 140, 200], // 4 물
-];
+import { sampleBlockColor } from './atlas.js';
 
 const SKY = [135, 180, 235];
 
-// 면(법선)별 밝기 — 윗면 밝고 옆/아랫면 어둡게(입체감).
-function faceShade(nx, ny, nz) {
-  if (ny > 0) return 1; // 윗면
-  if (ny < 0) return 0.45; // 아랫면
-  if (nz !== 0) return 0.8; // 남북면
-  return 0.62; // 동서면
+// 히트 법선(nx,ny,nz) → 아틀라스 면 식별자.
+function normalToFace(nx, ny, nz) {
+  if (ny > 0) return '+y';
+  if (ny < 0) return '-y';
+  if (nx > 0) return '+x';
+  if (nx < 0) return '-x';
+  if (nz > 0) return '+z';
+  return '-z';
 }
 
 /**
@@ -36,13 +30,12 @@ export function renderFrame(buf, width, height, grid, cam) {
       let g;
       let b;
       if (hit) {
-        const base = PALETTE[hit.block] ?? PALETTE[1];
-        const shade = faceShade(hit.nx, hit.ny, hit.nz);
+        // 아틀라스: 블록·면별 색 + 면 방향 셰이딩(top>side>bottom)이 이미 반영됨.
+        const col = sampleBlockColor(hit.block, normalToFace(hit.nx, hit.ny, hit.nz));
         const fog = Math.max(0.35, 1 - hit.distance / far);
-        const k = shade * fog;
-        r = base[0] * k;
-        g = base[1] * k;
-        b = base[2] * k;
+        r = col[0] * fog;
+        g = col[1] * fog;
+        b = col[2] * fog;
       } else {
         r = SKY[0];
         g = SKY[1];

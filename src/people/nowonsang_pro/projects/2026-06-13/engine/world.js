@@ -6,9 +6,62 @@
 // InputAction: 'forward'|'back'|'left'|'right'|'up'|'down'|'mine'|'place'
 
 import { castRay, cloneVoxels, forwardVector, makeVoxels, rightVector, setVoxel, voxelAt } from './raycast.js';
+import { generateHeightmap, blockIdForHeight, makeNoise3D } from './worldgen.js';
 
 export const DEFAULT_STEP = { moveSpeed: 4 }; // 초당 셀
 export const PITCH_LIMIT = Math.PI / 2 - 0.02;
+
+/**
+ * 절차적 월드: worldgen 하이트맵으로 지형을 깔고 3D 노이즈로 동굴을 판다.
+ * 순수 함수(난수는 시드 기반 결정적). 셸이 기본 월드로 사용.
+ * 높이를 월드 박스 안에 들어오도록 작은 amplitude로 스케일하고 클램프한다.
+ */
+export function createGenWorld(seed = 1) {
+  const sx = 40;
+  const sy = 28;
+  const sz = 40;
+  const minH = 3;
+  const maxH = sy - 8;
+  const voxels = makeVoxels(sx, sy, sz, 0);
+
+  const { heights } = generateHeightmap(sx, sz, seed, {
+    amplitude: 5,
+    baseHeight: 2,
+    scale: 14,
+    octaves: 4,
+  });
+  const clampH = (h) => Math.max(minH, Math.min(maxH, h));
+  const cave = makeNoise3D('cave:' + seed);
+
+  for (let z = 0; z < sz; z++) {
+    for (let x = 0; x < sx; x++) {
+      const surface = clampH(heights[x + sx * z]);
+      const top = blockIdForHeight(surface);
+      for (let y = 0; y <= surface; y++) {
+        let block;
+        if (y === surface) block = top;
+        else if (y >= surface - 3) block = 3; // 흙
+        else block = 1; // 돌
+        // 지표 아래 동굴: 3D 노이즈 임계 초과면 공기로 비움
+        if (y < surface - 1 && cave(x * 0.14, y * 0.18, z * 0.14) > 0.72) continue;
+        setVoxel(voxels, x, y, z, block);
+      }
+    }
+  }
+
+  // 스폰: 중앙 컬럼 지표 위 공중(현재 셸은 비행 조작 → 안전).
+  const cx = Math.floor(sx / 2);
+  const cz = Math.floor(sz / 2);
+  const groundH = clampH(heights[cx + sx * cz]);
+  return {
+    voxels,
+    player: { x: cx + 0.5, y: groundH + 4.5, z: cz + 0.5, yaw: 0, pitch: -0.25 },
+    inventory: { 1: 16, 2: 16, 3: 16 },
+    selectedBlock: 2,
+    reach: 5,
+    fov: Math.PI / 3,
+  };
+}
 
 /** 기본 월드: 바닥 평면(잔디) + 흩뿌린 블록 몇 개. 플레이어는 +z 응시. */
 export function createWorld() {
