@@ -1,0 +1,120 @@
+/* Voxel Raycaster 셸 스타일. 공용 Hub 안에서 동작하므로 전역(:root/body/*) 오버라이드는 두지 않고
+   .vx-* 로컬 클래스만 둔다. 디자인 토큰은 var(..., fallback) 으로 안전하게 참조. */
+
+.vx-root {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 16px;
+  color: var(--color-text, #e6edf3);
+}
+
+.vx-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-primary, #00694d);
+  margin: 0 0 12px;
+}
+
+.vx-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: #000;
+  border: 1px solid #2a313c;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.vx-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* 저해상 프레임버퍼를 또렷하게 업스케일 */
+  image-rendering: pixelated;
+  cursor: crosshair;
+}
+
+.vx-crosshair {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.vx-crosshair::before,
+.vx-crosshair::after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.85);
+}
+.vx-crosshair::before {
+  left: 50%;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  transform: translateX(-50%);
+}
+.vx-crosshair::after {
+  top: 50%;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  transform: translateY(-50%);
+}
+
+.vx-hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 10px 12px;
+  font-size: 13px;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+}
+
+.vx-hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.vx-inv {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.vx-slot {
+  padding: 6px 10px;
+  font-size: 13px;
+  background: var(--panel, #161b22);
+  border: 1px solid #2a313c;
+  border-radius: 6px;
+}
+
+.vx-slot-on {
+  border-color: var(--color-primary, #00694d);
+  color: #fff;
+  box-shadow: 0 0 0 1px var(--color-primary, #00694d) inset;
+}
+
+.vx-actions button {
+  margin-left: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: var(--color-text, #e6edf3);
+  background: var(--panel, #161b22);
+  border: 1px solid #2a313c;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.vx-actions button:hover {
+  border-color: var(--color-primary, #00694d);
+}
