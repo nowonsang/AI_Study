@@ -15,7 +15,7 @@ export const projects = [
     slug: '2026-06-13',
     date: '2026.06.13',
     title: '3D Voxel Raycaster',
-    desc: 'React+TS 3D 복셀 레이캐스팅 마인크래프트 (Amanatides–Woo, 순수 엔진)',
+    desc: 'React 3D 복셀 마인크래프트 — 순수 엔진(raycast·worldgen 동굴·AO조명·AABB물리·청크) + atlas 면셰이딩, node --test 10오라클 green',
     Component: lazy(() => import('./projects/2026-06-13/index.jsx')),
   },
   {

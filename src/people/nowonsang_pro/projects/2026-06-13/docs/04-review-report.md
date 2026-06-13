@@ -43,3 +43,25 @@ projects.js  ← 2026-06-13 항목 등록
 ## 배포(브랜치 푸시) — 사용자 승인 대기
 - 제안 브랜치: `nowonsang-team/voxel-raycast-2026-06-13`
 - 변경 파일: 본 프로젝트 신규 파일 + `projects.js` 1줄. `git push` 는 CLAUDE.md §8 규정상 **승인 후** 진행.
+
+---
+
+## 리뷰 추가 — 2026-06-13 고퀄리티판 W1 마감
+
+### 변경 요약
+- 신규 순수 모듈 5종(worldgen/light/physics/atlas/chunks) + 각 node --test. 셸 배선(createGenWorld 지형, atlas 렌더).
+- 공유 파일(src/shared, App.jsx, index.css, vite.config) **변경 0** → 7인 무영향. 루트 의존성 추가 0(node --test 유지).
+- 본인 폴더 외 수정: `src/people/nowonsang_pro/projects.js` 1줄(desc 갱신) — 본인 카탈로그, 허용 범위.
+
+### 체크리스트 (CLAUDE.md §8 Phase 4)
+- [x] 본인 폴더 외 파일 수정 없음 (projects.js 본인 카탈로그 제외)
+- [x] projects.js 등록/갱신 완료
+- [x] tests/·docs/ 산출물 존재 (+ .bkit/decisions ADR 0001·0002, plan.yaml, state, audit)
+- [x] 문서 01~04 존재 + 본 웨이브 추가 기록
+- [x] `npm run build` 성공
+
+### 체크포인트 / best_known_good (git 태그)
+`bkg-voxel-baseline-2026-06-13` → `bkg-voxel-engine-expansion-2026-06-13` → `voxel-shell-wired-2026-06-13`
+
+### 종료 판정
+오케스트레이터 종료조건(11 오라클 전부 green)은 **미충족** — 사용자 결정으로 **여기서 마감**(옵션 2). 순수엔진 경로 10/11 green, GPU 오라클 2종은 ADR 0002로 명시 연기. `git push`는 §8 규정상 **사용자 승인 후**.

@@ -30,3 +30,22 @@ HUD 텍스트 확인: `1. 돌 × 8 | 2. 잔디 × 8 | 3. 흙 × 8`.
 ## 5. 한계/후속
 - Hub 카드는 정적(정보+스크린샷). 즉시 플레이는 자체 dev 서버(`npm run dev`). ADR 0002 참조.
 - 텍스처/조명 없음(면 음영+거리 fog만). 청크 스트리밍·OffscreenCanvas 워커는 후속 최적화 여지.
+
+---
+
+## QA 추가 — 2026-06-13 고퀄리티판 W1 (순수엔진 확장)
+
+### 게이트 (메인 직접 재실행, 자가보고 아님)
+| 검증 | 명령 | 결과 |
+|---|---|---|
+| 전체 단위 오라클 | `node --test 'engine/*.test.js' 'tests/*.test.js'` | **83/83 pass, 0 fail** (baseline 36→83, 회귀 0) |
+| AC5 성능 | `node bench/fps.mjs` | **144.9 fps** @160×100 (≥30) |
+| AC3 순수성 | `grep -riE 'react\|jsx\|document' engine/*.js` | **0 토큰** |
+| 빌드 | `npm run build` (루트 Vite) | 성공 |
+| 절차적 월드 | createGenWorld(1337) sanity | solid 12395 / air 32405, 스폰 공중·지표 below OK |
+
+### 신규 모듈별 오라클 통과
+- AC6 atlas(8) · AC7 light(6) · AC8 worldgen(7) · AC9 chunks(6) · AC10 physics(10) — 전부 green.
+
+### 연기 (ADR 0002, 헤드리스 WebGL2 필요)
+- AC1 셰이더 패리티 · AC11 골든 이미지 · AC5' 960×540@60fps GPU — headless-gl Node23 빌드 위험 → Playwright 오프스크린 권장, 다음 웨이브.
