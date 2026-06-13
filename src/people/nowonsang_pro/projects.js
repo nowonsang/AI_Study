@@ -12,6 +12,13 @@ import { lazy } from 'react'
  */
 export const projects = [
   {
+    slug: '2026-06-13',
+    date: '2026.06.13',
+    title: '3D Voxel Raycaster',
+    desc: 'React+TS 3D 복셀 레이캐스팅 마인크래프트 (Amanatides–Woo, 순수 엔진)',
+    Component: lazy(() => import('./projects/2026-06-13/index.jsx')),
+  },
+  {
     slug: '2026-06-04',
     date: '2026.06.04',
     title: 'Todo 일정관리',

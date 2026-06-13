@@ -39,13 +39,59 @@
 
 ---
 
+## 🚨 ZERO-TOLERANCE RULE — 프로젝트 안에 프로젝트(중첩 npm 프로젝트) 금지
+
+> **개인 작업 폴더 안에 독립적인 npm 프로젝트(자체 `package.json` / `node_modules` / lock 파일 / 번들러 설정)를 만드는 것은 100% 금지입니다.**
+> **이 규칙은 노원상(관리자) 포함 7명 전원에게 공통 적용됩니다.**
+
+### 핵심 원칙
+- **Node·의존성은 오직 레포 루트(`/AI_Study`) 한 곳에만 설치합니다.** 모든 작업물은 루트의 `package.json` / `node_modules` / Vite 설정을 **공유**합니다.
+- 개인 폴더(`src/people/<SLUG>/...`) 안에는 **실제 구현 파일만** 둡니다 → `.jsx`, `.js`, `.css`, `.html`(필요 시), 데이터/문서 파일.
+- 루트에 없는 새 라이브러리가 필요하면 **루트 `package.json`에 추가**하고 루트에서 `npm install` 합니다. (의존성 추가는 0절에 따라 모든 개발자에게 허용)
+
+### 금지 예시 (절대 금지)
+| 위치 | ❌ 금지 (중첩 프로젝트) | ✅ 올바른 방식 |
+|---|---|---|
+| `src/people/<SLUG>/projects/<DATE>/package.json` | 폴더별 자체 package.json 생성 | 루트 `package.json` 공유 |
+| `src/people/<SLUG>/projects/<DATE>/node_modules/` | 폴더별 `npm install` | 루트 `node_modules` 공유 |
+| `.../package-lock.json`, `.../pnpm-lock.yaml` | 폴더별 lock 파일 | 루트 lock 파일만 |
+| `.../vite.config.ts`, `.../tsconfig.json` | 폴더별 번들러/TS 설정 | 루트 `vite.config.js` 공유 |
+| 폴더 안에서 `npm init` / `npm create vite` | 새 프로젝트 스캐폴딩 | 루트 라우팅에 `index.jsx`만 연결 |
+
+### 올바른 폴더 구성 (예: 마인크래프트 같은 풀시스템 작업물)
+```
+src/people/<SLUG>/projects/<YYYY-MM-DD>/
+├── index.jsx          # 진입점 (루트 라우팅이 lazy import) — 루트 React/Vite 사용
+├── components/        # .jsx 컴포넌트
+├── engine/            # 게임 로직 등 .js 모듈
+├── styles/            # .css
+├── index.html         # 정적 진입이 꼭 필요할 때만 (선택)
+├── tests/             # Playwright 스크린샷 (.png)
+└── docs/              # 산출물 (.md)
+# ❌ package.json / node_modules / lock / vite.config / tsconfig 는 여기 없음
+```
+
+### 이유
+1. **의존성 중복·디스크 낭비**: 폴더마다 `node_modules`(수백 MB)가 생기면 레포가 비대해지고 Git이 느려짐
+2. **빌드 일관성**: 루트 Vite 한 곳에서 빌드해야 7명 작업물이 한 Hub로 묶여 정상 동작. 중첩 설정은 라우팅·번들에서 깨짐
+3. **버전 충돌 방지**: 폴더마다 다른 React/Vite 버전이 깔리면 공용 컴포넌트·디자인 시스템이 어긋남
+4. **Git 오염**: lock 파일·`node_modules`가 커밋되면 머지 충돌과 리뷰 노이즈 폭증
+
+### Claude 동작 규칙
+- 작업물을 만들 때 **개인 폴더 안에 `package.json`·`node_modules`·lock·번들러 설정을 생성하지 않습니다.** 루트 의존성을 그대로 사용합니다.
+- 새 라이브러리가 필요하면 즉시 멈추고 → "루트 `package.json`에 `<pkg>`를 추가하고 루트에서 `npm install` 하겠습니다"라고 안내한 뒤 루트에만 반영합니다.
+- 사용자가 폴더 안에 독립 프로젝트를 만들라고 요청해도, 위 이유를 한 줄로 설명하고 **루트 공유 방식으로 재제안**합니다.
+- 이미 만들어진 중첩 프로젝트를 발견하면 사용자에게 알리고, `index.jsx` 등 구현 파일만 남기고 `package.json`·`node_modules`·lock·`vite.config`·`tsconfig` 제거를 제안합니다.
+
+---
+
 ## 0. 개발 명령어 & 스택 (Quick Reference)
 
 - **스택**: React 18 + Vite 5 + React Router 6 + Tailwind 3
 - **실행**: `npm run dev` (→ http://localhost:5173)
 - **빌드**: `npm run build` · **프리뷰**: `npm run preview` (포트 4173)
 - **테스트 프레임워크 없음** — 수동 브라우저 검증 (Hub → 본인 카드 클릭)
-- **의존성(`package.json`)은 모든 개발자가 자유롭게 추가/수정 가능** (lock 파일 충돌 시 나중에 pull 받는 사람이 `npm install` 재실행)
+- **의존성(`package.json`)은 모든 개발자가 자유롭게 추가/수정 가능** — 단 **오직 레포 루트 `package.json`만** 수정합니다. 개인 폴더 안에 별도 package.json/node_modules 생성 금지 (위 ZERO-TOLERANCE 규칙 참조). lock 파일 충돌 시 나중에 pull 받는 사람이 루트에서 `npm install` 재실행
 
 ---
 
@@ -293,6 +339,7 @@ Claude는 응답 시작 전에 다음을 **무조건** 확인합니다:
 6. ☐ 풀시스템 빌드일 경우 `tests/`·`docs/` 서브디렉토리 만들었나? (2-2절)
 7. ☐ Playwright 스크린샷이 `프로젝트폴더/tests/<순번>-<screen>-<checkpoint>.png` 규칙 준수?
 8. ☐ **모든 디렉토리·파일명이 영어인가? 한글 경로 0개인가?** (ZERO-TOLERANCE 규칙)
+8-1. ☐ **개인 폴더 안에 `package.json`·`node_modules`·lock·`vite.config`·`tsconfig` 를 만들지 않았는가? (중첩 프로젝트 금지 ZERO-TOLERANCE)** → 루트 의존성만 공유
 9. ☐ localStorage 키에 `<SLUG>` 포함? → 코드 생성 시 검증
 10. ☐ 디자인 시스템 토큰 사용? → CSS 변수 우선
 11. ☐ 풀시스템 빌드 완료 시 `projects.js` 등록했나?
